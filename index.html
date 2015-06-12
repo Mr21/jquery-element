@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>jquery-element</title>
+	<meta charset="utf-8"/>
+	<meta property="og:title"       content="jquery-element"/>
+	<meta property="og:url"         content="https://mr21.github.io/jquery-element/"/>
+	<meta property="og:image"       content="https://mr21.github.io/jquery-element/thumbnail.jpg"/>
+	<meta property="og:description" content="jquery-element ..."/>
+	<link rel="stylesheet" href="../_/fa/css/font-awesome.min.css"/>
+	<link rel="stylesheet" href="../_/header.css"/>
+	<script src="../_/jquery.min.js"></script>
+	<script src="../_/header.js"></script>
+	<script src="jquery-element.js"></script>
+	<script src="myElement.js"></script>
+    <style>
+        .demo {
+            width: 560px;
+            margin: 50px auto;
+            padding: 10px 0 0 10px;
+            border-radius: 4px;
+            background: #555;
+        }
+    </style>
+</head>
+<body>
+	<div id="header">
+		<i class="fa fa-fw fa-plug"></i>
+		<h1>jquery-element - 1.0.0</h1>
+	</div>
+
+    <div class="demo">
+		<button class="call">$( ".myElement" ).element( 0 ).getColor()</button><br/>
+        <button class="append">$( "..." ).append( "..." )</button>
+		<br/><br/>
+		<div class="myElements-container">
+			<div class="myElement" data-jquery-element="myElement"></div
+		></div>
+    </div>
+
+	<script>
+	$( "button.call" ).click(function() {
+		alert( $( ".myElement" ).element().getColor() );
+	});
+	$( "button.append" ).click(function() {
+		$( ".myElements-container" )
+			.append( '<div class="myElement" data-jquery-element="myElement"></div>' );
+	});
+	</script>
+
+</body>
+</html>
