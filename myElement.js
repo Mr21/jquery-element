@@ -32,17 +32,13 @@ $.element({
                     }\
     ',
     init: function() {
-        var
-            jqElement = this.jqElement,
-            jqCircle = jqElement.children("*")
-        ;
-        this.jqElement.mousedown( function( e ) {
-            var
-                r = ~~(Math.random() * 255),
-                g = ~~(Math.random() * 255),
-                b = ~~(Math.random() * 255)
-            ;
-            jqElement.css("background", "rgb("+r+","+g+","+b+")");
+        var jqElement = this.jqElement;
+        jqElement.mousedown( function() {
+            jqElement.css("background", "rgb(" +
+                ~~(Math.random() * 255) + ", " +
+                ~~(Math.random() * 255) + ", " +
+                ~~(Math.random() * 255) + ")"
+            );
         });
     },
     prototype: {
