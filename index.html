@@ -7,46 +7,46 @@
 	<meta property="og:url"         content="https://mr21.github.io/jquery-element/"/>
 	<meta property="og:image"       content="https://mr21.github.io/jquery-element/thumbnail.jpg"/>
 	<meta property="og:description" content="jquery-element ..."/>
-	<link rel="stylesheet" href="../_/fa/css/font-awesome.min.css"/>
-	<link rel="stylesheet" href="../_/header.css"/>
-	<script src="../_/jquery.min.js"></script>
-	<script src="../_/header.js"></script>
-	<script src="jquery-element.js"></script>
-	<script src="myElement.js"></script>
-    <style>
-        .demo {
-            width: 560px;
-            margin: 50px auto;
-            padding: 10px 0 0 10px;
-            border-radius: 4px;
-            background: #555;
-        }
-    </style>
+	<link rel="stylesheet" href="/_/fa/css/font-awesome.min.css"/>
+	<link rel="stylesheet" href="/_/header.css"/>
+	<script src="/_/header.js"></script>
+	<style>
+		.global {
+			box-sizing: border-box;
+			width: 750px;
+			margin: 35px auto;
+		}
+		h2 {
+			margin: 0 0 30px;
+		}
+		p {
+			text-indent: 1em;
+		}
+	</style>
 </head>
 <body>
 	<div id="header">
 		<i class="fa fa-fw fa-plug"></i>
-		<h1>jquery-element - 1.0.0</h1>
+		<h1>jquery-element</h1>
 	</div>
 
-    <div class="demo">
-		<button class="call">$( ".myElement" ).element( 0 ).getColor()</button><br/>
-        <button class="append">$( "..." ).append( "..." )</button>
-		<br/><br/>
-		<div class="myElements-container">
-			<div class="myElement" data-jquery-element="myElement"></div
-		></div>
-    </div>
-
-	<script>
-	$( "button.call" ).click(function() {
-		alert( $( ".myElement" ).element().getColor() );
-	});
-	$( "button.append" ).click(function() {
-		$( ".myElements-container" )
-			.append( '<div class="myElement" data-jquery-element="myElement"></div>' );
-	});
-	</script>
-
+	<div class="global">
+		<h2>jquery-element</h2>
+		<p>
+			<b>jquery-element</b> is a simple tiny jQuery plugin to write others plugins easely. It's exactly the same principle of the Angular's directive, it's a way to create dynamic custom HTML elements. jquery-element use the new <b>MutationObserver</b> to detect when there is a new element added to the DOM.
+		</p>
+		<p>
+			A new jquery-element (which is the equivalent of a <i>class</i> in the Oriented Object paradigm) have to be created with the function <code>jQuery.element</code> like this&nbsp;:
+		</p>
+		<script src="https://gist.github.com/Mr21/6ebdcb537edbcce8e0ef.js"></script>
+		<p>
+			After that, all your custom elements who are already set in the HTML or dynamically added into the DOM will be initialised and functionnal automatically&nbsp;:
+		</p>
+		<script src="https://gist.github.com/Mr21/85521f09f0835061aa20.js"></script>
+		<p>
+			You can reach the attributes or call the methodes of one of your special custom element with the function <code>jQuery.fn.element</code> like this&nbsp;:
+		</p>
+		<script src="https://gist.github.com/Mr21/2cf20468a2727817c1ee.js"></script>
+	</div>
 </body>
 </html>
