@@ -15,6 +15,7 @@
 			box-sizing: border-box;
 			width: 750px;
 			margin: 35px auto;
+			color: #ccc;
 		}
 		h2 {
 			margin: 0 0 30px;
@@ -24,6 +25,17 @@
 		}
 		a {
 			color: #fff;
+			text-decoration: none;
+		}
+		a:hover {
+			border-bottom: 1px dotted;
+		}
+		h2 a {
+			margin-left: 1em;
+			font-size: 16px;
+		}
+		p a {
+			font-weight: bold;
 		}
 	</style>
 </head>
@@ -34,7 +46,10 @@
 	</div>
 
 	<div class="global">
-		<h2>jquery-element</h2>
+		<h2>
+			jquery-element
+			<a href="https://github.com/Mr21/jquery-element/releases"><i class="fa fa-download"></i> download</a>
+		</h2>
 		<p>
 			<b>jquery-element</b> is a simple tiny jQuery plugin to write others plugins easely. It's exactly the same principle of the Angular's directive, it's a way to create dynamic custom HTML elements. jquery-element use the new <b>MutationObserver</b> to detect when there is a new element added to the DOM.
 		</p>
