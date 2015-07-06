@@ -1,5 +1,5 @@
 /*
-	jquery-element - 1.1.0
+	jquery-element - 1.2.0
 	https://github.com/Mr21/jquery-element
 */
 
@@ -17,7 +17,9 @@ function initElement( obj, el ) {
 	;
 	that = $.extend( that, obj.prototype );
 	el.jqueryElementObject = that;
-	el.innerHTML = obj.html;
+	if ( obj.html ) {
+		el.innerHTML = obj.html;
+	}
 	obj.init.call( that );
 }
 
