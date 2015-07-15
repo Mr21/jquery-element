@@ -1,5 +1,5 @@
 /*
-	jquery-element - 1.2.0
+	jquery-element - 1.3.0
 	https://github.com/Mr21/jquery-element
 */
 
@@ -11,16 +11,78 @@ var
 
 function initElement( obj, el ) {
 	var
-		that = {
-			jqElement : $( el )
-		}
+		html,
+		elNextNode,
+		jqHtml,
+		jqNestedParent,
+		jqElementParent,
+		jqElementNext,
+		jqElement = $( el )
 	;
-	that = $.extend( that, obj.prototype );
-	el.jqueryElementObject = that;
-	if ( obj.html ) {
-		el.innerHTML = obj.html;
+
+	// Remove the data-jquery-element attribute to not re-initialize it
+	// when the element is detach and reattach to the DOM again.
+	delete el.dataset[ "jqueryElement" ];
+
+	// if there is some HTML to include inside the [data-jquery-element].
+	if ( html = obj.html ) {
+		jqElement.html( html );
 	}
-	obj.init.call( that );
+
+	// If there is some HTML to replace the [data-jquery-element].
+	if ( html = obj.htmlReplace ) {
+
+		// Creation of the content.
+		jqHtml = $( html );
+
+		// If the [data-jquery-element] will NOT be inside this new content...
+		if ( html.indexOf( "{{html}}" ) < 0 ) {
+
+			// ...we delete it by .replaceAll.
+			jqElement = jqHtml.replaceAll( el );
+		} else {
+
+			// Searching of the parent element who are containing
+			// the textNode with "{{html}}" inside.
+			jqNestedParent = jqHtml.find( ":contains('{{html}}'):last" );
+			if ( !jqNestedParent.length ) {
+				jqNestedParent = jqHtml;
+			}
+
+			jqElementParent = jqElement.parent();
+			jqElementNext = jqElement.next();
+
+			// Find the textNode...
+			elNextNode = jqNestedParent[0].firstChild;
+			for ( ; elNextNode ; elNextNode = elNextNode.nextSibling ) {
+				if ( elNextNode.nodeType === 3 &&
+					elNextNode.textContent.indexOf( "{{html}}" ) >= 0
+				) {
+
+					// ...to be delete and replace by the [data-jquery-element] element.
+					jqElement.replaceAll( elNextNode );
+					break;
+				}
+			}
+
+			// Now, all the content (with the [data-jquery-element] inside)
+			// will take the old position in the DOM of [data-jquery-element].
+			jqElement = jqHtml;
+			if ( jqElementNext.length ) {
+				jqElement.insertBefore( jqElementNext );
+			} else {
+				jqElement.appendTo( jqElementParent );
+			}
+		}
+	}
+
+	// Element's constructor
+	obj.init.call(
+		jqElement[0].jqueryElementObject =
+			$.extend( {
+				jqElement : jqElement
+			}, obj.prototype )
+	);
 }
 
 if ( MutationObserver = MutationObserver || WebKitMutationObserver ) {
