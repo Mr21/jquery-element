@@ -6,7 +6,7 @@
 (function( $ ) {
 
 var
-	jqElementsType = {}
+	list_elemName = {}
 ;
 
 function initElement( obj, el ) {
@@ -90,7 +90,7 @@ if ( MutationObserver = MutationObserver || WebKitMutationObserver ) {
 		var i = 0, j, m, el, obj;
 		for ( ; m = mutations[ i ]; ++i ) {
 			for ( j = 0; el = m.addedNodes[ j ]; ++j ) {
-				obj = el.nodeType === 1 && jqElementsType[ el.dataset[ "jqueryElement" ] ];
+				obj = el.nodeType === 1 && list_elemName[ el.dataset[ "jqueryElement" ] ];
 				if ( obj ) {
 					initElement( obj, el );
 				}
@@ -108,7 +108,7 @@ $.element = function( obj ) {
 		elems = $( "[data-jquery-element='" + obj.name + "']" ),
 		i = 0
 	;
-	jqElementsType[ obj.name ] = obj;
+	list_elemName[ obj.name ] = obj;
 	if ( obj.css ) {
 		obj.style = $( "<style>" )
 			.html( obj.css )
