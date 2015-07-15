@@ -104,17 +104,19 @@ if ( MutationObserver = MutationObserver || WebKitMutationObserver ) {
 
 $.element = function( obj ) {
 	var
-		nl = document.querySelectorAll( "[data-jquery-element='" + obj.name + "']" ),
+		el,
+		elems = $( "[data-jquery-element='" + obj.name + "']" ),
 		i = 0
 	;
 	jqElementsType[ obj.name ] = obj;
 	if ( obj.css ) {
-		obj.style = document.createElement( "style" );
-		obj.style.innerHTML = obj.css;
-		document.head.appendChild( obj.style );
+		obj.style = $( "<style>" )
+			.html( obj.css )
+			.appendTo( "head" )
+		;
 	}
-	for ( ; i < nl.length ; ++i ) {
-		initElement( obj, nl[ i ] );
+	while ( el = elems[ i++ ] ) {
+		initElement( obj, el );
 	}
 };
 
