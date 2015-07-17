@@ -8,9 +8,9 @@
 <script>
 function lg( s ) { console.log( s ); }
 
-function test( a, b, str ) {
+function test( num, a, b, str ) {
 	if ( a !== b ) {
-		console.log( ( str || "" ) + " (" + a + " !== " + b + ")" );
+		console.log( num + ". " + str + " (" + a + " !== " + b + ")" );
 	}
 }
 
@@ -28,8 +28,8 @@ $.element({
 					.text( "elA" )
 				[0]
 		;
-		test( jq.data( "jquery-element" ), undefined, ".data(): data-jquery-element should be gone" );
-		test( b.nodeName, "B", ".nodeName: fail on innerHTML (html:...)" );
+		test( 1, jq.data( "jquery-element" ), undefined, ".data(): data-jquery-element should be gone" );
+		test( 1, b.nodeName, "B", ".nodeName: fail on innerHTML (html:...)" );
 	}
 });
 
@@ -41,10 +41,10 @@ $.element({
 			jq = this.jqElement
 		;
 		jq.text( "elB" );
-		test( jq.data( "jquery-element" ), undefined, ".data(): data-jquery-element should be gone" );
-		test( jq[ 0 ].parentNode.id, "parent", ".parentNode: fail on htmlReplace" );
-		test( jq[ 0 ].nodeName, "SPAN", ".nodeName: fail on htmlReplace" );
-		test( jq.attr( "class" ), "foo", ".attr('class'): fail on htmlReplace" );
+		test( 2, jq.data( "jquery-element" ), undefined, ".data(): data-jquery-element should be gone" );
+		test( 2, jq[ 0 ].parentNode.id, "parent", ".parentNode: fail on htmlReplace" );
+		test( 2, jq[ 0 ].nodeName, "SPAN", ".nodeName: fail on htmlReplace" );
+		test( 2, jq.attr( "class" ), "foo", ".attr('class'): fail on htmlReplace" );
 	}
 });
 
@@ -60,8 +60,8 @@ $.element({
 			jqI = jq.children( "i" )
 		;
 		jqI.text( "elC" );
-		test( jq.attr( "class" ), "bar", ".attr('class'): fail on htmlReplace" );
-		test( jqI[ 0 ].parentNode.className, "bar", ".parentNode.className: fail on htmlReplace" );
+		test( 3, jq.attr( "class" ), "bar", ".attr('class'): fail on htmlReplace" );
+		test( 3, jqI[ 0 ].parentNode.className, "bar", ".parentNode.className: fail on htmlReplace" );
 	}
 });
 
@@ -82,9 +82,9 @@ $.element({
 			.next()
 				.text( "D" )
 		;
-		test( jq.is( "div.plop" ), true, ".is('div.plop'): fail on htmlReplace" );
-		test( jqS.next().text(), "D", ".next().text(): fail on htmlReplace" );
-		test( jqS[ 0 ].previousSibling, null, ".previousSibling: fail on htmlReplace" );
+		test( 4, jq.is( "div.plop" ), true, ".is('div.plop'): fail on htmlReplace" );
+		test( 4, jqS.next().text(), "D", ".next().text(): fail on htmlReplace" );
+		test( 4, jqS[ 0 ].previousSibling, null, ".previousSibling: fail on htmlReplace" );
 	}
 });
 
@@ -105,9 +105,9 @@ $.element({
 			.prev()
 				.text( "el" )
 		;
-		test( jq.is( "b.lol" ), true, ".is('div.lol'): fail on htmlReplace" );
-		test( jqU.prev().text(), "el", ".prev().text(): fail on htmlReplace" );
-		test( jqU[ 0 ].nextSibling, null, ".nextSibling: fail on htmlReplace" );
+		test( 5, jq.is( "b.lol" ), true, ".is('div.lol'): fail on htmlReplace" );
+		test( 5, jqU.prev().text(), "el", ".prev().text(): fail on htmlReplace" );
+		test( 5, jqU[ 0 ].nextSibling, null, ".nextSibling: fail on htmlReplace" );
 	}
 });
 
@@ -126,10 +126,10 @@ $.element({
 			jqA = jq.children( "a" ).text( "l" ),
 			jqB = jq.children( "b" ).text( "F" )
 		;
-		test( jq.is( "b.okay" ), true, ".is('b.okay'): fail on htmlReplace" );
-		test( jq.text(), "elF", ".prev().text(): fail on htmlReplace" );
-		test( jqA[ 0 ].previousSibling, jqSpan[ 0 ], ".previousSibling: fail on htmlReplace" );
-		test( jqA[ 0 ].nextSibling, jqB[ 0 ], ".nextSibling: fail on htmlReplace" );
+		test( 6, jq.is( "b.okay" ), true, ".is('b.okay'): fail on htmlReplace" );
+		test( 6, jq.text(), "elF", ".prev().text(): fail on htmlReplace" );
+		test( 6, jqA[ 0 ].previousSibling, jqSpan[ 0 ], ".previousSibling: fail on htmlReplace" );
+		test( 6, jqA[ 0 ].nextSibling, jqB[ 0 ], ".nextSibling: fail on htmlReplace" );
 	}
 });
 
@@ -156,10 +156,10 @@ $.element({
 			jq = this.jqElement,
 			jqSpan = jq.find( "> span > b > i > u > s > .deep" ).text( "elG" )
 		;
-		test( jq.is( "div.inception" ), true, ".is('div.inception'): fail on htmlReplace" );
-		test( jq.text(), "elG?!", ".prev().text(): fail on htmlReplace" );
-		test( jqSpan[ 0 ].previousSibling, null, ".previousSibling: fail on htmlReplace" );
-		test( jqSpan[ 0 ].nextSibling.textContent, "?", ".nextSibling: fail on htmlReplace" );
+		test( 7, jq.is( "div.inception" ), true, ".is('div.inception'): fail on htmlReplace" );
+		test( 7, jq.text(), "elG?!", ".text(): fail on htmlReplace" );
+		test( 7, jqSpan[ 0 ].previousSibling, null, ".previousSibling: fail on htmlReplace" );
+		test( 7, jqSpan[ 0 ].nextSibling.textContent, "?", ".nextSibling: fail on htmlReplace" );
 	}
 });
 
