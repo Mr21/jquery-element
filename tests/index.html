@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>jquery-element - tests</title>
+<meta charset="utf-8"/>
+<script src="../../_/jquery.js"></script>
+<script src="../jquery-element.js"></script>
+<script>
+function lg( s ) { console.log( s ); }
+
+function test( a, b, str ) {
+	if ( a !== b ) {
+		console.log( ( str || "" ) + " (" + a + " !== " + b + ")" );
+	}
+}
+
+$.element({
+	name: "elA",
+	html:
+		"<div>"+
+			"<b></b>"+
+		"</div>",
+	init: function() {
+		var
+			jq = this.jqElement,
+			b = jq
+				.find( "b" )
+					.text( "elA" )
+				[0]
+		;
+		test( jq.data( "jquery-element" ), undefined, ".data(): data-jquery-element should be gone" );
+		test( b.nodeName, "B", ".nodeName: fail on innerHTML (html:...)" );
+	}
+});
+
+$.element({
+	name: "elB",
+	htmlReplace: "<span class='foo'></span>",
+	init: function() {
+		var
+			jq = this.jqElement
+		;
+		jq.text( "elB" );
+		test( jq.data( "jquery-element" ), undefined, ".data(): data-jquery-element should be gone" );
+		test( jq[ 0 ].parentNode.id, "parent", ".parentNode: fail on htmlReplace" );
+		test( jq[ 0 ].nodeName, "SPAN", ".nodeName: fail on htmlReplace" );
+		test( jq.attr( "class" ), "foo", ".attr('class'): fail on htmlReplace" );
+	}
+});
+
+$.element({
+	name: "elC",
+	htmlReplace:
+		"<div class='bar'>"+
+			"{{html}}"+
+		"</div>",
+	init: function() {
+		var
+			jq = this.jqElement,
+			jqI = jq.children( "i" )
+		;
+		jqI.text( "elC" );
+		test( jq.attr( "class" ), "bar", ".attr('class'): fail on htmlReplace" );
+		test( jqI[ 0 ].parentNode.className, "bar", ".parentNode.className: fail on htmlReplace" );
+	}
+});
+
+$.element({
+	name: "elD",
+	htmlReplace:
+		"<div class='plop'>"+
+			"{{html}}"+
+			"<span>fail</span>"+
+		"</div>",
+	init: function() {
+		var
+			jq = this.jqElement,
+			jqS = jq.children( "s" )
+		;
+		jqS
+			.text( "el" )
+			.next()
+				.text( "D" )
+		;
+		test( jq.is( "div.plop" ), true, ".is('div.plop'): fail on htmlReplace" );
+		test( jqS.next().text(), "D", ".next().text(): fail on htmlReplace" );
+		test( jqS[ 0 ].previousSibling, null, ".previousSibling: fail on htmlReplace" );
+	}
+});
+
+$.element({
+	name: "elE",
+	htmlReplace:
+		"<b class='lol'>"+
+			"<span>fail</span>"+
+			"{{html}}"+
+		"</b>",
+	init: function() {
+		var
+			jq = this.jqElement,
+			jqU = jq.children( "u" )
+		;
+		jqU
+			.text( "E" )
+			.prev()
+				.text( "el" )
+		;
+		test( jq.is( "b.lol" ), true, ".is('div.lol'): fail on htmlReplace" );
+		test( jqU.prev().text(), "el", ".prev().text(): fail on htmlReplace" );
+		test( jqU[ 0 ].nextSibling, null, ".nextSibling: fail on htmlReplace" );
+	}
+});
+
+$.element({
+	name: "elF",
+	htmlReplace:
+		"<b class='okay'>"+
+			"<span>fail</span>"+
+			"{{html}}"+
+			"<b>fail</b>"+
+		"</b>",
+	init: function() {
+		var
+			jq = this.jqElement,
+			jqSpan = jq.children( "span" ).text( "e" ),
+			jqA = jq.children( "a" ).text( "l" ),
+			jqB = jq.children( "b" ).text( "F" )
+		;
+		test( jq.is( "b.okay" ), true, ".is('b.okay'): fail on htmlReplace" );
+		test( jq.text(), "elF", ".prev().text(): fail on htmlReplace" );
+		test( jqA[ 0 ].previousSibling, jqSpan[ 0 ], ".previousSibling: fail on htmlReplace" );
+		test( jqA[ 0 ].nextSibling, jqB[ 0 ], ".nextSibling: fail on htmlReplace" );
+	}
+});
+
+$.element({
+	name: "elG",
+	htmlReplace:
+		"<div class='inception'>"+
+			"<span>"+
+				"<b>"+
+					"<i>"+
+						"<u>"+
+							"<s>"+
+								"{{html}}"+
+								"<b>?</b>"+
+								"<a>!</a>"+
+							"</s>"+
+						"</u>"+
+					"</i>"+
+				"</b>"+
+			"</span>"+
+		"</div>",
+	init: function() {
+		var
+			jq = this.jqElement,
+			jqSpan = jq.find( "> span > b > i > u > s > .deep" ).text( "elG" )
+		;
+		test( jq.is( "div.inception" ), true, ".is('div.inception'): fail on htmlReplace" );
+		test( jq.text(), "elG?!", ".prev().text(): fail on htmlReplace" );
+		test( jqSpan[ 0 ].previousSibling, null, ".previousSibling: fail on htmlReplace" );
+		test( jqSpan[ 0 ].nextSibling.textContent, "?", ".nextSibling: fail on htmlReplace" );
+	}
+});
+
+</script>
+</head>
+<body>
+
+	<div id="parent">
+
+		<div data-jquery-element="elA"></div>
+		<div data-jquery-element="elA"></div>
+
+		<div data-jquery-element="elB"></div>
+		<div data-jquery-element="elB"></div>
+		
+		<i data-jquery-element="elC"></i>
+		<i data-jquery-element="elC"></i>
+		
+		<s data-jquery-element="elD"></s>
+		<s data-jquery-element="elD"></s>
+
+		<u data-jquery-element="elE"></u>
+		<u data-jquery-element="elE"></u>
+		
+		<a data-jquery-element="elF"></a>
+		<a data-jquery-element="elF"></a>
+		
+		<span class="deep" data-jquery-element="elG"></span>
+		<span class="deep" data-jquery-element="elG"></span>
+
+	</div>
+
+</body>
+</html>
