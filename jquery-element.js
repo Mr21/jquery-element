@@ -24,18 +24,18 @@ function initElement( obj, el ) {
 	// when the element is detach and reattach to the DOM again.
 	delete el.dataset[ "jqueryElement" ];
 
-	// if there is some HTML to include inside the [data-jquery-element].
+	// if there is some HTML to include inside the jqElement.
 	if ( html = obj.html ) {
 		jqElement.html( html );
 	}
 
-	// If there is some HTML to replace the [data-jquery-element].
+	// If there is some HTML to replace the jqElement.
 	if ( html = obj.htmlReplace ) {
 
 		// Creation of the content.
 		jqHtml = $( html );
 
-		// If the [data-jquery-element] will NOT be inside this new content...
+		// If the jqElement will NOT be inside this new content...
 		if ( html.indexOf( "{{html}}" ) < 0 ) {
 
 			// ...we delete it by .replaceAll.
@@ -55,18 +55,18 @@ function initElement( obj, el ) {
 			// Find the textNode...
 			elNextNode = jqNestedParent[0].firstChild;
 			for ( ; elNextNode ; elNextNode = elNextNode.nextSibling ) {
-				if ( elNextNode.nodeType === 3 &&
+				if ( elNextNode.nodeType === 3 && // Node.TEXT_NODE = 3
 					elNextNode.textContent.indexOf( "{{html}}" ) >= 0
 				) {
 
-					// ...to be delete and replace by the [data-jquery-element] element.
+					// ...to be delete and replace by the jqElement.
 					jqElement.replaceAll( elNextNode );
 					break;
 				}
 			}
 
-			// Now, all the content (with the [data-jquery-element] inside)
-			// will take the old position in the DOM of [data-jquery-element].
+			// Now, all the content (with the jqElement inside)
+			// will take the old position in the DOM of jqElement.
 			jqElement = jqHtml;
 			if ( jqElementNext.length ) {
 				jqElement.insertBefore( jqElementNext );
