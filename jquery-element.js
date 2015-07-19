@@ -1,5 +1,5 @@
 /*
-	jquery-element - 1.3.0
+	jquery-element - 1.3.1
 	https://github.com/Mr21/jquery-element
 */
 
@@ -76,13 +76,15 @@ function initElement( obj, el ) {
 		}
 	}
 
-	// Element's constructor
-	obj.init.call(
-		jqElement[0].jqueryElementObject =
-			$.extend( {
-				jqElement : jqElement
-			}, obj.prototype )
-	);
+	// Extend the `this` Object with all the methodes of the `prototype:` object.
+	jqElement[0].jqueryElementObject = $.extend( {
+		jqElement: jqElement
+	}, obj.prototype );
+
+	// Call the element's constructor: the `init:` function.
+	if ( obj.init ) {
+		obj.init.call( jqElement[0].jqueryElementObject );
+	}
 }
 
 if ( MutationObserver = MutationObserver || WebKitMutationObserver ) {
