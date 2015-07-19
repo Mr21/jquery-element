@@ -107,16 +107,21 @@ if ( MutationObserver = MutationObserver || WebKitMutationObserver ) {
 $.element = function( obj ) {
 	var
 		el,
+		// Find all the nodes who there are already in the HTML.
 		elems = $( "[data-jquery-element='" + obj.name + "']" ),
 		i = 0
 	;
+
 	list_elemName[ obj.name ] = obj;
+
+	// Set the CSS only one time.
 	if ( obj.css ) {
 		obj.style = $( "<style>" )
 			.html( obj.css )
 			.appendTo( "head" )
 		;
 	}
+
 	while ( el = elems[ i++ ] ) {
 		initElement( obj, el );
 	}
