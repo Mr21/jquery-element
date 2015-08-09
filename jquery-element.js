@@ -1,5 +1,5 @@
 /*
-	jquery-element - 1.3.1
+	jquery-element - 1.4.0
 	https://github.com/Mr21/jquery-element
 */
 
@@ -105,16 +105,12 @@ if ( MutationObserver = MutationObserver || WebKitMutationObserver ) {
 }
 
 $.element = function( obj ) {
-	var
-		el,
-		// Find all the nodes who there are already in the HTML.
-		elems = $( "[data-jquery-element='" + obj.name + "']" ),
-		i = 0
-	;
 
+	// We add a new entry for all the future elements with the name: `obj.name`.
+	// `list_elemName` is use in the MutationObserver.
 	list_elemName[ obj.name ] = obj;
 
-	// Set the CSS only one time.
+	// Set the CSS only one time directly in the <head>.
 	if ( obj.css ) {
 		obj.style = $( "<style>" )
 			.html( obj.css )
@@ -122,8 +118,26 @@ $.element = function( obj ) {
 		;
 	}
 
-	while ( el = elems[ i++ ] ) {
-		initElement( obj, el );
+	var
+		sel = "[data-jquery-element='" + obj.name + "']",
+		// Get all the elements who are already in the HTML.
+		jqElems = $( sel )
+	;
+
+	if ( jqElems.length ) {
+		// If we found several elements already in the HTML
+		// it's mean the JS files are put at the end of the <body>...
+		jqElems.each( init );
+	} else {
+		// ...If not, it's mean the JS files are in the <head> so, we have
+		// to wait for the DOM become ready to not make a conflict with any initialisation.
+		$( function() {
+			$( sel ).each( init );
+		});
+	}
+
+	function init() {
+		initElement( obj, this );
 	}
 };
 
