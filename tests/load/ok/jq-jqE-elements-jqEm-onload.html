@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/>
+<script src="/_/jquery.js"></script>
+<script src="../../../jquery-element.js"></script>
+</head>
+<body>
+	<div data-jquery-element="myElement"></div>
+	<div data-jquery-element="myElement"></div>
+	<script src="../jqEm.js"></script>
+	<script>
+		window.onload = function() {
+			var jqElem = $( ".myElement" );
+			if (
+				$.type( jqElem.eq( 0 ).element() ) !== "object" ||
+				$.type( jqElem.eq( 1 ).element() ) !== "object"
+			) {
+				$( "body" ).text( "KO" );
+			}
+		};
+	</script>
+</body>
+</html>
