@@ -1,5 +1,5 @@
 /*
-	jquery-element - 1.4.0
+	jquery-element - 1.5.0
 	https://github.com/Mr21/jquery-element
 */
 
@@ -12,6 +12,7 @@ var
 function initElement( obj, el ) {
 	var
 		html,
+		elementObject,
 		elNextNode,
 		jqHtml,
 		jqNestedParent,
@@ -53,13 +54,13 @@ function initElement( obj, el ) {
 			jqElementNext = jqElement.next();
 
 			// Find the textNode...
-			elNextNode = jqNestedParent[0].firstChild;
+			elNextNode = jqNestedParent[ 0 ].firstChild;
 			for ( ; elNextNode ; elNextNode = elNextNode.nextSibling ) {
 				if ( elNextNode.nodeType === 3 && // Node.TEXT_NODE = 3
 					elNextNode.textContent.indexOf( "{{html}}" ) >= 0
 				) {
 
-					// ...to be delete and replace by the jqElement.
+					// ...to be deleted and replaced by the jqElement.
 					jqElement.replaceAll( elNextNode );
 					break;
 				}
@@ -77,16 +78,19 @@ function initElement( obj, el ) {
 	}
 
 	// Extend the `this` Object with all the methodes of the `prototype:` object.
-	jqElement[0].jqueryElementObject = $.extend( {
+	elementObject =
+	jqElement[ 0 ].jqueryElementObject = $.extend( {
 		jqElement: jqElement
 	}, obj.prototype );
 
 	// Call the element's constructor: the `init:` function.
 	if ( obj.init ) {
-		obj.init.call( jqElement[0].jqueryElementObject );
+		obj.init.call( elementObject );
 	}
 }
 
+// This code is critical because it's called every time a new DOM element
+// is inserted or removed. Try to note use jQuery inside.
 if ( MutationObserver = MutationObserver || WebKitMutationObserver ) {
 	new MutationObserver( function( mutations ) {
 		var i = 0, j, m, el, obj;
@@ -125,11 +129,13 @@ $.element = function( obj ) {
 	;
 
 	if ( jqElems.length ) {
+
 		// If we found several elements already in the HTML
 		// it's mean the JS files are put at the end of the <body>...
 		jqElems.each( init );
 	} else {
-		// ...If not, it's mean the JS files are in the <head> so, we have
+
+		// ...Else, it's mean the JS files are in the <head> so, we have
 		// to wait for the DOM become ready to not make a conflict with any initialisation.
 		$( function() {
 			$( sel ).each( init );
