@@ -147,16 +147,8 @@ $.element = function( obj ) {
 	}
 };
 
-$.fn.element = function( i ) {
-	var len = this.length;
-	if ( !i ) {
-		i = 0;
-	} else if ( ( i = i % len ) < 0 ) {
-		i += len;
-	}
-	if ( this[ i ] ) {
-		return this[ i ].jqueryElementObject;
-	}
+$.fn.element = function() {
+	return this[ 0 ] && this[ 0 ].jqueryElementObject;
 };
 
 })( jQuery );
