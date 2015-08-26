@@ -1,5 +1,5 @@
 /*
-	jquery-element - 1.5.0
+	jquery-element - 1.6.0
 	https://github.com/Mr21/jquery-element
 */
 
@@ -8,6 +8,8 @@
 "use strict";
 
 var
+	// Because we can't call `arguments.slice()`
+	arraySlice = [].slice,
 	list_elemName = {}
 ;
 
@@ -149,8 +151,28 @@ $.element = function( obj ) {
 	}
 };
 
-$.fn.element = function() {
-	return this[ 0 ] && this[ 0 ].jqueryElementObject;
+$.fn.element = function( fnName ) {
+
+	// Return directly the jqueryElementObject for this kind of code:
+	// var value = $( "#thisOne" ).element().getValue();
+	if ( !arguments.length ) {
+		return this[ 0 ] && this[ 0 ].jqueryElementObject;
+	}
+
+	// Removing the name's methode of the arguments list.
+	var args = arraySlice.call( arguments, 1 );
+
+	// The `fn` methode will be called to each jquery-element, example of use:
+	// $( ".allTheseOnes" ).element( "methode", argA, argB, ... );
+	return this.each( function() {
+		var
+			proto = this.jqueryElementObject,
+			fn = proto && proto[ fnName ]
+		;
+		if ( fn ) {
+			fn.apply( proto, args );
+		}
+	});
 };
 
 })( jQuery );

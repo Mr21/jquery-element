@@ -169,6 +169,24 @@ function test( num, a, b, str ) {
 	});
 }
 
+// $( ".allTheseOnes" ).element( "fn", a, b, ... );
+{
+	$.element({
+		name: "elH",
+		prototype: {
+			clear: function() {
+				this.jqElement.empty();
+			},
+			foo: function( e, l ) {
+				this.jqElement.text( e + l );
+			},
+			bar: function( H ) {
+				this.jqElement.text( this.jqElement.text() + H );
+			}
+		}
+	});
+}
+
 </script>
 </head>
 <body>
@@ -196,7 +214,37 @@ function test( num, a, b, str ) {
 		<span class="deep" data-jquery-element="elG"></span>
 		<span class="deep" data-jquery-element="elG"></span>
 
+		<div class="allTheseOnes" data-jquery-element="elH">ko</div>
+		<div class="allTheseOnes" data-jquery-element="elH">ko</div>
+		<div class="allTheseOnes" data-jquery-element="elH">ko</div>
+
 	</div>
+
+	<script>
+
+	$( function() {
+		var
+			jqElem =
+				$( ".allTheseOnes" )
+					.element( "clear" )
+					.element( "foo", "e", "l" )
+					.element( "bar", "H" )
+					.element( "404" ) // do nothing
+					.element( "404", 1 )  // do nothing
+					.element( "404", 1, 2 ) // do nothing
+					.each( function() {
+						test( 8, $( this ).text(), "elH", "fail on .element( 'fn', ... )" );
+					})
+					.first(),
+			proto = jqElem.element()
+		;
+		proto.clear();
+		proto.foo( "e", "l" );
+		proto.bar( "H" );
+		test( 8, jqElem.text(), "elH", "fail on .element()" );
+	});
+
+	</script>
 
 </body>
 </html>
