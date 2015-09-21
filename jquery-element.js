@@ -1,5 +1,5 @@
 /*
-	jquery-element - 1.6.0
+	jquery-element - 1.7.0
 	https://github.com/Mr21/jquery-element
 */
 
@@ -22,12 +22,14 @@ function initElement( obj, el ) {
 		jqNestedParent,
 		jqElementParent,
 		jqElementNext,
-		jqElement = $( el )
+		jqElement = $( el ),
+		containerClasses = el.dataset[ "jqueryElementClass" ]
 	;
 
 	// Remove the data-jquery-element attribute to not re-initialize it
 	// when the element is detach and reattach to the DOM again.
 	delete el.dataset[ "jqueryElement" ];
+	delete el.dataset[ "jqueryElementClass" ];
 
 	// if there is some HTML to include inside the jqElement.
 	if ( html = obj.html ) {
@@ -80,6 +82,9 @@ function initElement( obj, el ) {
 			}
 		}
 	}
+
+	// Add the classes inside the [data-jquery-element-class] on the container.
+	jqElement.addClass( containerClasses );
 
 	// Extend the `this` Object with all the methodes of the `prototype:` object.
 	elementObject =
